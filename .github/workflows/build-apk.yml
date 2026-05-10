@@ -15,6 +15,13 @@ jobs:
       - name: Descargar codigo
         uses: actions/checkout@v4
 
+      - name: Mostrar estructura
+        run: |
+          echo "Archivos en la raiz:"
+          ls -la
+          echo "Buscar gradlew:"
+          find . -name "gradlew" -type f
+
       - name: Configurar Java 17
         uses: actions/setup-java@v4
         with:
@@ -22,15 +29,13 @@ jobs:
           java-version: 17
 
       - name: Dar permisos a gradlew
-        working-directory: APK/NotificationReader2
         run: chmod +x ./gradlew
 
       - name: Compilar APK Debug
-        working-directory: APK/NotificationReader2
         run: ./gradlew assembleDebug
 
       - name: Subir APK generado
         uses: actions/upload-artifact@v4
         with:
           name: YapeDetector-debug-apk
-          path: APK/NotificationReader2/app/build/outputs/apk/debug/*.apk
+          path: app/build/outputs/apk/debug/*.apk
