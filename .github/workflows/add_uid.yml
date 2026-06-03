@@ -1,0 +1,27 @@
+name: Add UID
+
+on:
+  workflow_dispatch:
+    inputs:
+      uid:
+        description: "UID"
+        required: true
+      days:
+        description: "Dias"
+        required: false
+        default: "30"
+
+jobs:
+  add_uid:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Enviar UID a la API
+        run: |
+          echo "UID: ${{ github.event.inputs.uid }}"
+          echo "Dias: ${{ github.event.inputs.days }}"
+
+          curl -i -X POST "https://bypass.panel09.shop/api/uid/add" \
+            -H "Content-Type: application/json" \
+            -H "X-API-KEY: ${{ secrets.BYPASS_API_KEY }}" \
+            -d '{"uid":"${{ github.event.inputs.uid }}","days":${{ github.event.inputs.days }}}'
